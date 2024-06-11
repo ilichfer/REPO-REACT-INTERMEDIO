@@ -1,19 +1,40 @@
+import { Box, Container, Grid, styled } from "@mui/material";
+import NavBar from "../components/NavBar";
+import CardItems from "../components/CardItems";
+import { ItemStructure } from "../Interfaces/ItemStructure";
+import UseApi from "./hook/UseApi";
 
-import { styled } from '@mui/material'
-import ButtonShop from '../components/ButtonShop'
-import NavBar from '../components/NavBar'
+
 
 export default function Home() {
-    styled('div')({
-        alignItems: 'center',
-    })
+ 
+  const{ data,loading} = UseApi();
+
+  styled("div")({
+    alignItems: "center",
+  });
 
   return (
-    <>  
-    <div>
-        <NavBar /> 
-        <h1>lista de productos</h1>
-    </div>
+    <>
+      <div>
+        <NavBar />
+        <Container maxWidth="lg">
+          <Box
+            sx={{
+              display: "flex",
+              marginTop: 5,
+              gap: 2,
+            }}
+          >
+            {loading ? <p>Loading...</p> :
+              <Grid container spacing={2}>
+              {data.map((item:ItemStructure) => (
+                <CardItems item={item} />
+              ))}
+            </Grid>}
+          </Box>
+        </Container>
+      </div>
     </>
-  )
+  );
 }
